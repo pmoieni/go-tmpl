@@ -1,0 +1,16 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "./internal/user/db/query"
+    schema: "./internal/user/db/migration"
+    gen:
+      go:
+        package: "sqlc"
+        out: "./internal/user/db/sqlc"
+        emit_json_tags: true
+        emit_prepared_queries: false
+        emit_interface: false
+        emit_exact_table_names: false
+        emit_empty_slices: true
+        emit_params_struct_pointers: true
+        json_tags_case_style: "snake"
