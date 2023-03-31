@@ -16,7 +16,7 @@ type Service interface {
 	Logf(string, ...any)
 
 	Decode(*http.Request, any) error
-	Respond(http.ResponseWriter, *http.Request, any, int)
+	Respond(http.ResponseWriter, any, int)
 	Created(http.ResponseWriter, *http.Request, string)
 	SetCookie(http.ResponseWriter, *http.Cookie)
 }
@@ -33,7 +33,7 @@ func (*service) Decode(r *http.Request, data interface{}) error {
 	return json.NewDecoder(r.Body).Decode(data)
 }
 
-func (*service) Respond(w http.ResponseWriter, r *http.Request, data interface{}, status int) {
+func (*service) Respond(w http.ResponseWriter, data interface{}, status int) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(status)
 	if data != nil {
@@ -50,7 +50,7 @@ func (s *service) Created(w http.ResponseWriter, r *http.Request, id string) {
 		path = path + "/"
 	}
 	w.Header().Add("Location", "//"+r.Host+path+id)
-	s.Respond(w, r, nil, http.StatusCreated)
+	s.Respond(w, nil, http.StatusCreated)
 }
 
 func (*service) SetCookie(w http.ResponseWriter, c *http.Cookie) { http.SetCookie(w, c) }
